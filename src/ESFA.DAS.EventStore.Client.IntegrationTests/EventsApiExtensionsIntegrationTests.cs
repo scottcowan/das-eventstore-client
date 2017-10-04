@@ -13,6 +13,7 @@ namespace ESFA.DAS.EventStore.Client.IntegrationTests
     public class EventsApiExtensionsIntegrationTests
     {
         [Test]
+        [Explicit]
         public async Task ShouldGetCreationEventsForAResourceTypeSinceLastCheckId()
         {
             var lastCheck = 0;
@@ -30,6 +31,7 @@ namespace ESFA.DAS.EventStore.Client.IntegrationTests
         }
 
         [Test]
+        [Explicit]
         public async Task ShouldCreateAPropertyChangeEvent()
         {
             var client = new EventsApi(new TestConfig());
