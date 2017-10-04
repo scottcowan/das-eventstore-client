@@ -7,7 +7,7 @@ namespace ESFA.DAS.EventStore.Client.IntegrationTests.Settings
     {
         public string GetSetting(string settingKey)
         {
-            return Environment.GetEnvironmentVariable($"DAS_{settingKey.ToUpper(CultureInfo.InvariantCulture)}", EnvironmentVariableTarget.User);
+            return Environment.GetEnvironmentVariable($"{settingKey.ToUpper(CultureInfo.InvariantCulture)}", EnvironmentVariableTarget.User);
         }
     }
 }

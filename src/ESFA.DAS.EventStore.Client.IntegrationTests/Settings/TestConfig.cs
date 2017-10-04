@@ -15,7 +15,7 @@ namespace ESFA.DAS.EventStore.Client.IntegrationTests.Settings
             _settings = settings;
         }
 
-        public string BaseUrl => _settings.GetSetting("EventApi.BaseUrl");
-        public string ClientToken => _settings.GetSetting("EventApi.ClientToken");
+        public string BaseUrl => _settings.GetSetting("EventApi:BaseUrl");
+        public string ClientToken => _settings.GetSetting("EventApi:ClientToken");
     }
 }
