@@ -68,7 +68,7 @@ before_build:
 # scripts to run after build
 after_build:
   - mkdir %PACKAGE_DIR%
-#  - nuget pack src\ESFA.DAS.EventStore.Client\ESFA.DAS.EventStore.Client.nuspec -OutputDirectory %PACKAGE_DIR% -BasePath src\ESFA.DAS.EventStore.Client -Verbosity Detailed -Version %APPVEYOR_BUILD_VERSION% -Symbols -Properties Configuration=Release
+  - nuget pack src\ESFA.DAS.EventStore.Client\ESFA.DAS.EventStore.Client.nuspec -OutputDirectory %PACKAGE_DIR% -BasePath src\ESFA.DAS.EventStore.Client -Verbosity Detailed -Version %APPVEYOR_BUILD_VERSION% -Symbols -Properties Configuration=Release
 
 artifacts:
   # pushing all *.nupkg files in directory

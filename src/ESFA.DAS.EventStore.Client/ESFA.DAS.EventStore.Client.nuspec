@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>ESFA DAS EventStore Client</title>
     <authors>scottcowan</authors>
-    <owners>scottcowan</owners>
+    <owners>scottcowan sfanuget</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <projectUrl>https://github.com/scottcowan/das-eventstore-client</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
