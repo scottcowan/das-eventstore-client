@@ -37,7 +37,7 @@ namespace Esfa.Das.Eventstore.Client
 
         public static async Task<ResourceLifeEvents<T>> GetResourceLifecycle<T>(this IEventsApi client, object id, int pageSize = 1000, int pageNumber = 1) where T : class
         {
-            var events = await client.GetGenericEventsByResourceId(typeof(T).FullName, id.ToString(), pageSize: pageSize,pageNumber: pageNumber);
+            var events = await client.GetGenericEventsByResourceId(typeof(T).FullName, id.ToString(), pageSize: pageSize, pageNumber: pageNumber);
             return MapEvents<T>(events);
         }
 
@@ -47,7 +47,7 @@ namespace Esfa.Das.Eventstore.Client
             return genericEvents.Select(MapCreateEvent<T>).ToList();
         }
 
-        public static async Task<List<ResourceChangeEvent<T>>> GetChanges<T>(this IEventsApi client, Expression<Func<T,object>> property = null, long fromEventId = 0, int pageSize = 1000, int pageNumber = 1) where T : class
+        public static async Task<List<ResourceChangeEvent<T>>> GetChanges<T>(this IEventsApi client, Expression<Func<T, object>> property = null, long fromEventId = 0, int pageSize = 1000, int pageNumber = 1) where T : class
         {
             var genericEvents = await client.GetGenericEventsById(typeof(ResourceChangeEvent<T>).FullName, fromEventId, pageSize, pageNumber);
             var mapped = genericEvents.Select(MapPropertyChangeEvent<T>);
@@ -109,9 +109,12 @@ namespace Esfa.Das.Eventstore.Client
         {
             foreach (var property in typeof(T).GetProperties().Where(x => x.GetMethod != null && x.GetMethod.IsPublic && (x.PropertyType.IsValueType || x.PropertyType == typeof(string))))
             {
-                var originalValue = property.GetMethod.Invoke(original, new object[] { });
-                var updatedValue = property.GetMethod.Invoke(updated, new object[] { });
-                if (!originalValue.Equals(updatedValue))
+                var isNullable = property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
+
+                var originalValue = property.GetMethod.Invoke(original, isNullable?null:new object[] { });
+                var updatedValue = property.GetMethod.Invoke(updated, isNullable?null:new object[] { });
+
+                if (originalValue== null && updatedValue != null || originalValue != null && updatedValue != null && !originalValue.Equals(updatedValue))
                 {
                     yield return new PropertyChange
                     {
@@ -123,6 +126,5 @@ namespace Esfa.Das.Eventstore.Client
                 }
             }
         }
-
     }
 }

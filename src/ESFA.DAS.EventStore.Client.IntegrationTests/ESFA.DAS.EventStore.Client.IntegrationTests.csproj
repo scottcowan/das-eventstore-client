@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventsApiExtensionsIntegrationTests.cs" />
+    <Compile Include="Models\NullablePayload.cs" />
     <Compile Include="Settings\AppConfigSettingsProvider.cs" />
     <Compile Include="Settings\IProvideSettings.cs" />
     <Compile Include="Settings\MachineSettings.cs" />

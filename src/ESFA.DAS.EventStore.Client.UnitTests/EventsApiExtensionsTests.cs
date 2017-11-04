@@ -9,6 +9,7 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.Events.Api.Client;
+using SFA.DAS.Events.Api.Client.Configuration;
 using SFA.DAS.Events.Api.Types;
 
 namespace ESFA.DAS.EventStore.Client.UnitTests
@@ -28,6 +29,22 @@ namespace ESFA.DAS.EventStore.Client.UnitTests
             Id = 1,
             Name = "Example 1",
             Title = "Example 1 Title"
+        };
+
+        private readonly NullablePayload _nullablePayload = new NullablePayload
+        {
+            Id = 1,
+            Name = "Nullable1",
+            Title = "NullableTitle",
+            StartDate = null
+        };
+
+        private readonly NullablePayload _nullablePayloadChange = new NullablePayload
+        {
+            Id = 1,
+            Name = "Nullable1",
+            Title = "NullableTitle",
+            StartDate = DateTime.Today
         };
 
         [Test]
@@ -138,6 +155,21 @@ namespace ESFA.DAS.EventStore.Client.UnitTests
             Assert.AreEqual(change.PropertyName, events.Changes.First().Payload.First().PropertyName);
         }
 
+        [Test]
+        public async Task ShouldHandleNullableProperties()
+        {
+            var client = new Mock<IEventsApi>();
+
+            client.Setup(x => x.CreateGenericEvent(It.IsAny<IGenericEvent<IEnumerable<PropertyChange>>>())).Returns(Task.FromResult(0))
+                .Verifiable();
+
+            await client.Object.SendChangeEvent(_nullablePayload, _nullablePayloadChange, _nullablePayload.Id);
+
+            client.Verify(
+                x =>
+                    x.CreateGenericEvent(It.Is<IGenericEvent<IEnumerable<PropertyChange>>>(y => y.Payload.Count() == 1)),
+                Times.Once);
+        }
 
         private GenericEvent CreationEvent<T>(T payload, object resourceId)
         {
