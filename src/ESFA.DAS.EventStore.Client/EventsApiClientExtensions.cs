@@ -70,7 +70,7 @@ namespace Esfa.Das.Eventstore.Client
                 Payload = JsonConvert.DeserializeObject<T>(arg.Payload),
                 CreatedOn = arg.CreatedOn,
                 Id = arg.Id,
-                ResourceId = arg.ResourceId,
+                ResourceId = arg.ResourceId
             };
         }
 
@@ -81,7 +81,7 @@ namespace Esfa.Das.Eventstore.Client
                 Payload = JsonConvert.DeserializeObject<IEnumerable<PropertyChange>>(arg.Payload),
                 CreatedOn = arg.CreatedOn,
                 Id = arg.Id,
-                ResourceId = arg.ResourceId,
+                ResourceId = arg.ResourceId
             };
         }
         private static string GetPropertyName<T>(Expression<Func<T, object>> action) where T : class
@@ -101,7 +101,7 @@ namespace Esfa.Das.Eventstore.Client
             return new ResourceChangeEvent<T>()
             {
                 Payload = changes,
-                ResourceId = id.ToString(),
+                ResourceId = id.ToString()
             };
         }
 
