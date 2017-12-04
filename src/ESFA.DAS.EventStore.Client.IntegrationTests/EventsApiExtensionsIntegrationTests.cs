@@ -59,5 +59,37 @@ namespace ESFA.DAS.EventStore.Client.IntegrationTests
             Assert.AreEqual(2, life.Changes.First().Payload.Count());
         }
 
+        [Test]
+        [Explicit]
+        public async Task ShouldCreateAPropertyChangeEventWhenNullablePropertiesChange()
+        {
+            var client = new EventsApi(new TestConfig());
+            var id = new Random().Next();
+
+            var startDate = DateTime.Today;
+            var model = new NullablePayload
+            {
+                Id = id,
+                Name = "Test person",
+                Title = "title",
+                StartDate = null
+            };
+            await client.SendCreationEvent(model, model.Id);
+
+            var model2 = new NullablePayload()
+            {
+                Id = id,
+                Name = "Test person1",
+                Title = "title",
+                StartDate = startDate
+            };
+
+            await client.SendChangeEvent(model, model2, model.Id);
+
+            var life = await client.GetResourceLifecycle<NullablePayload>(model.Id);
+            Assert.IsNotNull(life.Changes);
+            Assert.AreEqual(1, life.Changes.Count());
+        }
+
     }
 }
